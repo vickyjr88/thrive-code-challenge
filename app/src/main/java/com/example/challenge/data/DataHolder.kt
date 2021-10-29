@@ -2,13 +2,20 @@ package com.example.challenge.data
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DataHolder : ViewModel(){
+
     val message = MutableLiveData<String>()
 
     fun sendMessage(text: String) {
-        message.value = text
+        viewModelScope.launch {
+            delay(5000)
+            message.value = text
+        }
+
     }
 
     suspend fun callApiAndGetResponse(id: Int): String {
