@@ -8,7 +8,12 @@ import kotlinx.coroutines.launch
 
 class DataHolder : ViewModel(){
 
+    init {
+        makeApiCalls()
+    }
+
     val message = MutableLiveData<String>()
+    val messageFromApi = MutableLiveData<String>()
 
     fun sendMessage(text: String) {
         viewModelScope.launch {
@@ -16,6 +21,39 @@ class DataHolder : ViewModel(){
             message.value = text
         }
 
+    }
+
+
+
+    fun sendMessageFromApi(text: String) {
+        viewModelScope.launch {
+            messageFromApi.value = text
+        }
+
+    }
+
+    fun makeApiCalls(){
+        viewModelScope.launch {
+            try {
+                val result1 = callApiAndGetResponse(1)
+                sendMessageFromApi(result1)
+            } catch (e: Exception){
+                val result3 = callApiAndGetResponse(3)
+                sendMessageFromApi(result3)
+                val result1 = callApiAndGetResponse(1)
+                sendMessageFromApi(result1)
+            }
+
+            try {
+                val result2 = callApiAndGetResponse(2)
+                sendMessageFromApi(result2)
+            } catch (e: Exception){
+                val result3 = callApiAndGetResponse(3)
+                sendMessageFromApi(result3)
+                val result2 = callApiAndGetResponse(2)
+                sendMessageFromApi(result2)
+            }
+        }
     }
 
     suspend fun callApiAndGetResponse(id: Int): String {

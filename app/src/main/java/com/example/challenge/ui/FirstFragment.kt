@@ -39,6 +39,9 @@ class FirstFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer {
             binding.textviewFirst.text = it
         })
+        viewModel.messageFromApi.observe(viewLifecycleOwner, Observer {
+            binding.textviewSecond.text = it
+        })
     }
 
 
